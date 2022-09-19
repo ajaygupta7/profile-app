@@ -1,0 +1,45 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>login</ion-title>
+  </ion-toolbar>
+</ion-header>
+​
+<ion-content>
+  <form [formGroup]="loginForm" (ngSubmit)="login()">
+  <ion-item lines="full">
+    <ion-label position="floating">Email</ion-label>
+    <ion-input type="text" formControlName="email" required></ion-input>
+  </ion-item>
+  <ion-text color="danger" class="ion-padding-horizontal ion-no-margin"
+  *ngIf="(loginFormControl.email.touched || submitted) && loginFormControl.email.errors?.required">
+  <ion-icon name="alert-circle-outline"></ion-icon> Email is required
+</ion-text>
+<ion-text class="ion-padding-horizontal ion-no-margin" color="danger"
+  *ngIf="(loginFormControl.email.touched || submitted) && loginFormControl.email.errors?.email">
+  <ion-icon name="alert-circle-outline"></ion-icon> Enter a valid email address
+</ion-text>
+  <ion-item lines="full">
+    <ion-label position="floating">Password</ion-label>
+    <ion-input type="password" formControlName="password" required></ion-input>
+  </ion-item>
+  <ion-text class="ion-margin-horizontal ion-no-margin" color="danger"
+  *ngIf="(loginFormControl.password.touched || submitted) && loginFormControl.password.errors?.required">
+  <ion-icon size="small" name="alert-circle-outline"></ion-icon> Password is Required
+</ion-text>
+<ion-text color="danger"
+  *ngIf="(loginFormControl.password.touched || submitted) && loginFormControl.password.errors?.invalidPassword">
+  <ion-icon size="small" name="alert-circle-outline"></ion-icon> Password should have minimum 8 characters, at least 1 uppercase letter, 1 lowercase letter, 1 Special letter and 1
+  number
+</ion-text>
+  <ion-row>
+    <ion-col>
+      <ion-button type="submit" color="danger" expand="block">Login</ion-button>
+      <!-- <a [routerLink]="['/forgot-password']" class="small-text">Forgot Password?</a> -->
+    </ion-col>
+    <ion-col>
+      <ion-button [routerLink]="['/register']" color="primary" expand="block">Back to Register</ion-button>
+      <!-- <a [routerLink]="['/forgot-password']" class="small-text">Forgot Password?</a> -->
+    </ion-col>
+  </ion-row>
+  </form>
+</ion-content>

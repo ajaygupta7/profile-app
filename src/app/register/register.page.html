@@ -1,0 +1,108 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Register</ion-title>
+  </ion-toolbar>
+</ion-header>
+​
+<ion-content>
+  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+    <ion-item lines="full">
+      <ion-label position="floating">First name</ion-label>
+      <ion-input type="text" formControlName="firstName" required></ion-input>
+    </ion-item>
+    <ion-text color="danger"
+      *ngIf="(registerFormControl.firstName.touched || submitted) && registerFormControl.firstName.errors?.required">
+      <ion-icon size="small" name="alert-circle-outline"></ion-icon> First Name is required
+    </ion-text>
+    <ion-item lines="full">
+      <ion-label position="floating">Last name</ion-label>
+      <ion-input type="text" formControlName="lastName"></ion-input>
+    </ion-item>
+    <ion-item lines="full">
+      <ion-label position="floating">Email</ion-label>
+      <ion-input type="text" formControlName="email" required></ion-input>
+    </ion-item>
+    <ion-text color="danger" class="ion-padding-horizontal ion-no-margin"
+      *ngIf="(registerFormControl.email.touched || submitted) && registerFormControl.email.errors?.required">
+      <ion-icon name="alert-circle-outline"></ion-icon> Email is required
+    </ion-text>
+    <ion-text class="ion-padding-horizontal ion-no-margin" color="danger"
+      *ngIf="(registerFormControl.email.touched || submitted) && registerFormControl.email.errors?.email">
+      <ion-icon name="alert-circle-outline"></ion-icon> Enter a valid email address
+    </ion-text>
+    <ion-item lines="full">
+      <ion-label position="floating">Password</ion-label>
+      <ion-input type="password" formControlName="password" required></ion-input>
+    </ion-item>
+    <ion-text class="ion-margin-horizontal ion-no-margin" color="danger"
+      *ngIf="(registerFormControl.password.touched || submitted) && registerFormControl.password.errors?.required">
+      <ion-icon size="small" name="alert-circle-outline"></ion-icon> Password is Required
+    </ion-text>
+    <ion-text color="danger"
+      *ngIf="(registerFormControl.password.touched || submitted) && registerFormControl.password.errors?.invalidPassword">
+      <ion-icon size="small" name="alert-circle-outline"></ion-icon> Password should have minimum 8 characters, at least 1 uppercase letter, 1 lowercase letter, 1 Special letter and 1
+      number
+    </ion-text>
+    <!-- <ion-item> -->
+    <ion-list>
+      <ion-radio-group formControlName="gender">
+        <ion-list-header>
+          <ion-label>Gender</ion-label>
+        </ion-list-header>
+        <ion-row>
+          <ion-col>
+            <ion-item>
+              <ion-label>Male</ion-label>
+              <ion-radio slot="start" value="male"></ion-radio>
+            </ion-item>
+          </ion-col>
+          <ion-col>
+            <ion-item>
+              <ion-label>Female</ion-label>
+              <ion-radio slot="start" value="female"></ion-radio>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+      </ion-radio-group>
+    </ion-list>
+    <!-- </ion-item> -->
+
+    <ion-list>
+      <ion-list-header>
+        <ion-label>Hobbies</ion-label>
+      </ion-list-header>
+      <ion-item *ngFor="let item of hobbiesList; let i=index">
+        <ion-label>{{item}}</ion-label>
+        <ion-checkbox slot="end" [value]="item" (ionChange)="onCheckChange($event)" [checked]="item.checked">
+        </ion-checkbox>
+        <!-- <input type="checkbox" [value]="item.value" (change)="onCheckChange($event)"> {{item.description}} -->
+      </ion-item>
+    </ion-list>
+    <ion-item lines="full">
+      <ion-label position="floating">Address</ion-label>
+      <ion-textarea rows="4" placeholder="Address goes here..." formControlName="address"></ion-textarea>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">State</ion-label>
+      <ion-select placeholder="Select State" formControlName="state">
+        <ion-select-option *ngFor="let state of stateList; let idx=index" [value]="state">{{state}}
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+    <!-- <ion-row>
+      <ion-col>
+        <ion-button type="submit" color="danger" expand="block">Sign Up</ion-button>
+      </ion-col>
+    </ion-row> -->
+  </form>
+</ion-content>
+<ion-footer>
+  <ion-row>
+    <ion-col>
+      <ion-button type="submit" (click)="onSubmit()" color="danger" expand="block">Sign Up</ion-button>
+    </ion-col>
+    <ion-col>
+      <ion-button [routerLink]="['/login']" color="primary" expand="block">Back to Login</ion-button>
+    </ion-col>
+  </ion-row>
+</ion-footer>

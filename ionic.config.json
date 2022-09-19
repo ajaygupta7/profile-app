@@ -1,5 +1,7 @@
 {
   "name": "profile-app",
-  "integrations": {},
+  "integrations": {
+    "capacitor": {}
+  },
   "type": "angular"
 }
