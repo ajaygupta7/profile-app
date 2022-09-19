@@ -139,11 +139,16 @@ export class RegisterPage implements OnInit {
 
   onSubmit() {
     console.log('ajay test:', this.registerForm.value);
+    let alreadyExist: any = [];
+    alreadyExist = this.userAuth.usersData.filter((u)=> u.email == this.registerForm.value.email);
+    if(alreadyExist.length > 0) {
+      this.userAuth.presentAlert('Duplicate Email!!','User with same Email already registered!!');
+      return;
+    }
     this.submitted = true;
     if (this.registerForm.valid) {
       this.userAuth.presentAlert('Sucess!!','User Registered Successfully!!');
-      // console.table(this.registerForm.value);
-
+      // console.table('this.userAuth.usersData: ',this.userAuth.usersData);
       this.userAuth.usersData.push(this.registerForm.value);
       this.storage.set('userList',this.userAuth.usersData);
       this.userAuth.fetchUsers();

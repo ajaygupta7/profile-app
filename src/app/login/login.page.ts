@@ -30,13 +30,7 @@ export class LoginPage implements OnInit {
     if (!this.loginForm.valid) {
       return;
     }
-    var a: any;
-    if (this.userAuth.usersData.length <= 0){
-      a = this.userAuth.fetchUsers().then((data)=> {
-        console.log('in login Init', data);
-      });
-    } 
-    // if (a) {}
+    this.userAuth.fetchUsers();
     // this.userAuth.login(this.loginForm)
     this.userAuth.useLogin(this.loginForm.value)
     .subscribe(value => {
