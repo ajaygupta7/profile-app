@@ -55,33 +55,24 @@ export class RegisterPage implements OnInit {
       firstName: ['', Validators.required],
       lastName: [''],
       email: ['', [Validators.required, Validators.email]], // this will be unique
-      // username: ['', [Validators.required], this.customValidator.userNameValidator.bind(this.customValidator)],
       password: ['', Validators.compose([Validators.required, this.customValidator.validatePattern()])],
       address: [''],
       state: [''],
       gender: ['female'],
       hobbies: new FormArray([]),
-      // confirmPassword: ['', [Validators.required]],
     }
     );
 
     // fetch latest user data
     this.userAuth.fetchUsers();
-
-//     const checkboxes = <FormGroup>this.registerForm.get('hobbies');
-// this.hobbiesList.forEach((option: any) => {
-//     checkboxes.addControl(option.name, new FormControl(true));
-// });
   }
 
 
   onCheckChange(event) {
-    // console.log('ajay test', event);
     const formArray: FormArray = this.registerForm.get('hobbies') as FormArray;
   
     /* Selected */
     if(event.target.checked){
-      // Add a new control in the arrayForm
       formArray.push(new FormControl(event.target.value));
     }
     /* unselected */
@@ -114,33 +105,33 @@ export class RegisterPage implements OnInit {
     }
   }
 
-  createHobbies(hobbiesInputs) {
-    const arr = hobbiesInputs.map(hobby => {
-      return new FormControl(hobby.selected || false);
-    });
-    return new FormArray(arr);
-  }
+  // createHobbies(hobbiesInputs) {
+  //   const arr = hobbiesInputs.map(hobby => {
+  //     return new FormControl(hobby.selected || false);
+  //   });
+  //   return new FormArray(arr);
+  // }
 
-  getSelectedHobbies() {
-    this.selectedHobbiesNames = _.map(
-      this.registerForm.controls.hobbies["controls"],
-      (hobby, i) => {
-        return hobby.value && this.hobbiesList[i].value;
-      }
-    );
-    this.getSelectedHobbiesName();
-  }
+  // getSelectedHobbies() {
+  //   this.selectedHobbiesNames = _.map(
+  //     this.registerForm.controls.hobbies["controls"],
+  //     (hobby, i) => {
+  //       return hobby.value && this.hobbiesList[i].value;
+  //     }
+  //   );
+  //   this.getSelectedHobbiesName();
+  // }
 
-  getSelectedHobbiesName() {
-    this.selectedHobbiesNames = _.filter(
-      this.selectedHobbiesNames,
-      function(hobby) {
-        if (hobby !== false) {
-          return hobby;
-        }
-      }
-    );
-  }
+  // getSelectedHobbiesName() {
+  //   this.selectedHobbiesNames = _.filter(
+  //     this.selectedHobbiesNames,
+  //     function(hobby) {
+  //       if (hobby !== false) {
+  //         return hobby;
+  //       }
+  //     }
+  //   );
+  // }
 
   get registerFormControl() {
     return this.registerForm.controls;
@@ -150,13 +141,12 @@ export class RegisterPage implements OnInit {
     console.log('ajay test:', this.registerForm.value);
     this.submitted = true;
     if (this.registerForm.valid) {
-      alert('Form Submitted succesfully!!!\n Check the values in browser console.');
-      console.table(this.registerForm.value);
+      this.userAuth.presentAlert('Sucess!!','User Registered Successfully!!');
+      // console.table(this.registerForm.value);
 
-      // let usersData = [];
-      // let user = {type:"Fiat", model:"500", color:"white"};
       this.userAuth.usersData.push(this.registerForm.value);
       this.storage.set('userList',this.userAuth.usersData);
+      this.userAuth.fetchUsers();
 
       console.log('data saved in table:', this.userAuth.usersData);
       

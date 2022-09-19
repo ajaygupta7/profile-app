@@ -4,7 +4,7 @@ import { Storage } from '@ionic/storage';
 import { BehaviorSubject, from, Observable, of } from 'rxjs';
 import { delay, map, switchMap, take, tap } from "rxjs/operators";
 import { HttpClient } from '@angular/common/http';
-import { Platform } from '@ionic/angular';
+import { AlertController, Platform, ToastController } from '@ionic/angular';
 import { Router } from '@angular/router';
 
 
@@ -27,6 +27,8 @@ export class UserAuthService {
     private storage: Storage,
     private http: HttpClient,
     private router: Router,
+    private toastController: ToastController,
+    private alertController: AlertController,
     private readonly platform: Platform
   ) {
     this.loadUserInfo();
@@ -36,19 +38,10 @@ export class UserAuthService {
 
   useLogin(login: any): Observable<boolean> {
     if (login && login.email && login.password) {
-
-      //  return of(sampleJwt).pipe(
-      //  map((token) => {
-      // if (this.usersData.length <= 0){
-      //   var a  = this.fetchUsers().then((data)=> {
-      //     console.log('in login func', data);
-      //   });
-      // }
       console.log('login details: ', login, this.usersData);
       return this.http.get('https://randomuser.me/api/').pipe(
         take(1),
         map(res => {
-
           this.currentUser = this.usersData.filter((u) => {
             return u.email == login.email && u.password == login.password
           })
@@ -59,11 +52,6 @@ export class UserAuthService {
           } else {
             return false;
           }
-          //  this.storage.set('access_token',token);
-          //  var decodedUser = this.jwtHelper.decodeToken(token);
-          //  this.userInfo.next(decodedUser);
-          //  console.log(decodedUser);
-          //  return true;
         })
       );
     } else {
@@ -109,16 +97,12 @@ export class UserAuthService {
         if (!userData) {
           return null;
         }
-        // var decodedUser = this.jwtHelper.decodeToken(userData);
-        // this.userInfo.next(decodedUser);
         return true;
       }));
 
   }
 
   getAccessToken() {
-    // return this.storage.get("access_token");
-    // return this.currentUser || [];
     return this.storage.get('currentUser').then((data) => {
       return data
     })
@@ -130,6 +114,37 @@ export class UserAuthService {
       this.currentUser = undefined;
       this.router.navigateByUrl("/login");
     });
+  }
+
+  // common Functions
+
+  async presentToast(msg, dur?) {
+    msg = msg ? msg : 'Alert!';
+    dur = dur ? dur*1000 : 3000;
+    const toast = await this.toastController.create({
+      message: msg,
+      duration: dur
+    });
+    await toast.present();
+  }
+
+  async presentAlert(hdr,msg) {
+    const alert = await this.alertController.create({
+      header: hdr || 'Alert!',
+      subHeader: msg || '',
+      buttons: [
+        {
+          text: 'OK',
+          role: 'confirm',
+          handler: () => {
+            // this.handlerMessage = 'Alert confirmed';
+            console.log("Okay clicked!");
+          },
+        },
+      ],
+    });
+
+    await alert.present();
   }
 
 }

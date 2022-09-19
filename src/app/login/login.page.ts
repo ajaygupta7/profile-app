@@ -13,10 +13,6 @@ export class LoginPage implements OnInit {
 ​
 ​
   loginForm: FormGroup;
-  // loginForm = {
-  //   email:'',
-  //   password:''
-  // };
   constructor(private userAuth:UserAuthService,
     private fb: FormBuilder,
     private router: Router,
@@ -49,8 +45,10 @@ export class LoginPage implements OnInit {
         // alert('login success');
         this.router.navigateByUrl("/dashboard");
         this.userAuth.getCurrentUser();
+        let msg = 'Welcome ' + this.userAuth.currentUser?.firstName + ' ' + this.userAuth.currentUser?.lastName
+        this.userAuth.presentToast(msg);
       } else{
-        alert('login fails')
+        this.userAuth.presentAlert("Login Failed!","Email or Password wrong!");
       }
     },(error) => {
       console.log('ajay testt error:', error);
@@ -61,5 +59,4 @@ export class LoginPage implements OnInit {
  get loginFormControl() {
   return this.loginForm.controls;
 }
-​
 }
